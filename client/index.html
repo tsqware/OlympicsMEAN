@@ -1,0 +1,15 @@
+<html ng-app="olympics">
+  <head>
+    <meta charset="utf-8">
+    <title>Olympics</title>
+  </head>
+  <body>
+    <h1>Olympics</h1>
+
+    <ul ng-controller="SportsController as SportsCtrl">
+      <li ng-repeat="sport in SportsCtrl.sports">
+        {{ sport }}
+      </li>
+    <script src="dist/bundle.js"></script>
+  </body>
+</html>
