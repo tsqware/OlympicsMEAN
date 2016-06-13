@@ -8,6 +8,9 @@ mongoUtil.connect();
 
 app.use(express.static(__dirname + "/../client"));
 
+let bodyParser = require("body-parser");
+let jsonParser = bodyParser.json();
+
 app.get("/sports", (request, response) => {
   let sports = mongoUtil.sports();
   sports.find().toArray((err, docs) => {
@@ -26,15 +29,23 @@ app.get('/sports/:name', (request, response) => {
   let sports = mongoUtil.sports();
   console.log("Sport Name: " + sportName);
 
-  sports.find({name: sportName})
-        .limit(1)
-        .next((err, doc) => {
-          if (err) {
-            response.sendStatus(400);
-          }
-          console.log("Sport Doc: ", doc);
-          response.json(doc);
-        });
+  sports.find({name: sportName}).limit(1).next((err, doc) => {
+    if (err) {
+      response.sendStatus(400);
+    }
+    console.log("Sport Doc: ", doc);
+    response.json(doc);
+  });
+});
+
+app.post("/sports/:name/medals", jsonParser, (request, response) => {
+  let sportName = request.params.name;
+  let newMedal = request.body.medal;
+
+  console.log("Sport Name: ", sportName);
+  console.log("Medal: ", newMedal);
+
+  response.sendStatus(201);
 });
 
 app.listen(8181, () => console.log("Listening on 8181"));
